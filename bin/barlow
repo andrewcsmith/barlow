@@ -1,3 +1,15 @@
 #!/usr/bin/env ruby
 
-abort "you need to write me"
+require 'json'
+require 'pp'
+require './lib/barlow'
+
+h = JSON.parse(File.read("./sorted_harmonicities.json"))
+
+h.each_cons(2) do |x|
+  x[0]['diff'] = Barlow.interior_ratio(x[0]['ratio'], x[1]['ratio'])
+  x[0]['diff_harmonicity'] = Barlow.interior_harmonicity(x[0]['ratio'], x[1]['ratio'])
+end
+
+pp h.select {|x| x['diff_harmonicity'] && x['diff_harmonicity'].abs < 0.15}
+
