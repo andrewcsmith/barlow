@@ -11,5 +11,24 @@ h.each_cons(2) do |x|
   x[0]['diff_harmonicity'] = Barlow.interior_harmonicity(x[0]['ratio'], x[1]['ratio'])
 end
 
-pp h.select {|x| x['diff_harmonicity'] && x['diff_harmonicity'].abs < 0.15}
+# pp h.select {|x| x['diff_harmonicity'] && x['diff_harmonicity'].abs < 0.15}
+
+pp h
+
+pp "number of bars:"
+pp h.inject(0) {|memo, x|
+  memo += x['ratio'][1]
+}
+
+# The above selects the 9 transitions where the diff_harmonicity is less than
+# 0.15. It seems that this is the threshold (just eyeballing it) where things
+# start to become a little hairy for performers, and it may be good to have a
+# transition in between the two.
+#
+# Therefore, the diff ratio should be factored into two ratios that, when
+# multiplied together, lead to the resulting ratio.
+#
+# 1. Take the factors of each the numerator and denominator of the diff
+# 2. Examine if any of these possible transitions have a harmonicity > 0.15
+# 3. Find hopefully a midpoint between the two elements 
 
